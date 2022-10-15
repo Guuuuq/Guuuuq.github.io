@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>顾柒</title>
+  <title>顾柒·Blog</title>
   
+  <subtitle>山海皆可平</subtitle>
+  <link href="https://guuuuq.github.io/atom.xml" rel="self"/>
   
-  <link href="http://example.com/atom.xml" rel="self"/>
-  
-  <link href="http://example.com/"/>
+  <link href="https://guuuuq.github.io/"/>
   <updated>2022-10-09T15:32:03.609Z</updated>
-  <id>http://example.com/</id>
+  <id>https://guuuuq.github.io/</id>
   
   <author>
     <name>顾柒</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://example.com/posts/undefined.html"/>
-    <id>http://example.com/posts/undefined.html</id>
+    <link href="https://guuuuq.github.io/posts/undefined.html"/>
+    <id>https://guuuuq.github.io/posts/undefined.html</id>
     <published>2022-10-07T16:25:38.507Z</published>
     <updated>2022-10-09T15:32:03.609Z</updated>
     

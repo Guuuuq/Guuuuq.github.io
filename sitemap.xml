@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://example.com/manifest.json</loc>
+    <loc>https://guuuuq.github.io/manifest.json</loc>
     
     <lastmod>2022-10-13</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/posts/undefined.html</loc>
+    <loc>https://guuuuq.github.io/posts/undefined.html</loc>
     
     <lastmod>2022-10-09</lastmod>
     
@@ -21,8 +21,8 @@
   
 
   <url>
-    <loc>http://example.com/</loc>
-    <lastmod>2022-10-13</lastmod>
+    <loc>https://guuuuq.github.io/</loc>
+    <lastmod>2022-10-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
