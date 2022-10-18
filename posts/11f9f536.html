@@ -1,0 +1,284 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>sqlmap使用方法 | 顾柒·Blog</title><meta name="keywords" content="博客,顾柒,一个有趣的博客,"><meta name="author" content="顾柒"><meta name="copyright" content="顾柒"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="sqlmap是什么sqlmap是一个自动化的sql注入工具，其主要功能是扫描，发现并利用给定的URL和sql注入漏洞，其广泛的功能和选项包括数据库指纹，枚举，数据库提权，访问目标文件系统，并在获取操作权限时执行任意命令。 sqlmap基本命令1.选项在这些选项中必须提供至少有一个确定目标123-h,--help  显示基本帮助信息并退出-hh  显示高级帮助信息并退出--version  显示程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqlmap使用方法">
+<meta property="og:url" content="https://guuuuq.github.io/posts/11f9f536.html">
+<meta property="og:site_name" content="顾柒·Blog">
+<meta property="og:description" content="sqlmap是什么sqlmap是一个自动化的sql注入工具，其主要功能是扫描，发现并利用给定的URL和sql注入漏洞，其广泛的功能和选项包括数据库指纹，枚举，数据库提权，访问目标文件系统，并在获取操作权限时执行任意命令。 sqlmap基本命令1.选项在这些选项中必须提供至少有一个确定目标123-h,--help  显示基本帮助信息并退出-hh  显示高级帮助信息并退出--version  显示程序">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-18T13:46:55.000Z">
+<meta property="article:modified_time" content="2022-10-18T14:32:58.063Z">
+<meta property="article:author" content="顾柒">
+<meta property="article:tag" content="博客,顾柒,一个有趣的博客,">
+<meta name="twitter:card" content="summary"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://guuuuq.github.io/posts/11f9f536"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="manifest" href="/manifest.json"/><meta name="msapplication-TileColor" content="#425aef"/><link rel="apple-touch-icon" sizes="180x180" href="/img/siteicon/128.png"/><link rel="icon" type="image/png" sizes="32x32" href="/img/siteicon/32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/img/siteicon/16.png"/><link rel="mask-icon" href="/img/siteicon/128.png" color="#5bbad5"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'sqlmap使用方法',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-10-18 22:32:58'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://cdn.cbd.int/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="顾柒·Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archivesCN/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><i class="fa-fw fas fa-home faa-tada"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/archives/"><i class="fa-fw fas fa-archive faa-tada"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/artitalk/"><i class="fa-fw fas fa-comment-dots faa-tada"></i><span> 闲言碎语</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/music/"><i class="fa-fw fas fa-music faa-tada"></i><span> 音乐馆</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/categories/"><i class="fa-fw fas fa-folder-open faa-tada"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/fcircle/"><i class="fa-fw fab fa-artstation faa-tada"></i><span> 朋友圈</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/comments/"><i class="fa-fw fas fa-envelope faa-tada"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><i class="fa-fw fas fa-link faa-tada"></i><span> 友人帐</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/about/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-zhifeiji"></use></svg><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">顾柒·Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><i class="fa-fw fas fa-home faa-tada"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/archives/"><i class="fa-fw fas fa-archive faa-tada"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/artitalk/"><i class="fa-fw fas fa-comment-dots faa-tada"></i><span> 闲言碎语</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/music/"><i class="fa-fw fas fa-music faa-tada"></i><span> 音乐馆</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/categories/"><i class="fa-fw fas fa-folder-open faa-tada"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/fcircle/"><i class="fa-fw fab fa-artstation faa-tada"></i><span> 朋友圈</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/comments/"><i class="fa-fw fas fa-envelope faa-tada"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><i class="fa-fw fas fa-link faa-tada"></i><span> 友人帐</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/about/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-zhifeiji"></use></svg><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">sqlmap使用方法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-18T13:46:55.000Z" title="发表于 2022-10-18 21:46:55">2022-10-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-18T14:32:58.063Z" title="更新于 2022-10-18 22:32:58">2022-10-18</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="sqlmap使用方法"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="sqlmap是什么"><a href="#sqlmap是什么" class="headerlink" title="sqlmap是什么"></a>sqlmap是什么</h1><p>sqlmap是一个自动化的sql注入工具，其主要功能是扫描，发现并利用给定的URL和sql注入漏洞，其广泛的功能和选项包括数据库指纹，枚举，数据库提权，访问目标文件系统，并在获取操作权限时执行任意命令。</p>
+<h1 id="sqlmap基本命令"><a href="#sqlmap基本命令" class="headerlink" title="sqlmap基本命令"></a>sqlmap基本命令</h1><h2 id="1-选项"><a href="#1-选项" class="headerlink" title="1.选项"></a>1.选项</h2><p>在这些选项中必须提供至少有一个确定目标<br><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-h,--help  显示基本帮助信息并退出</span><br><span class="line">-hh  显示高级帮助信息并退出</span><br><span class="line">--version  显示程序版本信息并退出</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-目标"><a href="#2-目标" class="headerlink" title="2.目标"></a>2.目标</h2><p>这些选项可以用来指定如何连接到目标URL<br><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-u  目标URL  </span><br><span class="line">例：sqlmap -u &quot;www.abc.com/index.php?id=1&quot;</span><br><span class="line">-m  后接一个txt文件，文件中是多个url，sqlmap会自动化的检测其中的所有url。</span><br><span class="line">例：sqlmap -m target.txt</span><br><span class="line">-r  可以将一个post请求方式的数据包(bp抓包)保存在一个txt中，sqlmap会通过post方式检测目标。</span><br><span class="line">例：sqlmap -r bp.txt</span><br></pre></td></tr></table></figure></p>
+<h2 id="3-请求"><a href="#3-请求" class="headerlink" title="3.请求"></a>3.请求</h2><p>这些选项可用于指定要测试的参数、提供自定义注入有效载荷和可选的篡改脚本。<br><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--method=METHOD 指定是get方法还是post方法。</span><br><span class="line">例： --method=GET --method=POST</span><br><span class="line">--random-agent  使用随机user-agent进行测试。sqlmap有一个文件中储存了各种各样的user-agent，文件在sqlmap/txt/user-agent.txt 在level&gt;=3时会检测user-agent注入。</span><br><span class="line">--proxy=PROXY 指定一个代理。</span><br><span class="line">例： --proxy=&quot;127.0.0.1:8080&quot; 使用GoAgent代理。</span><br></pre></td></tr></table></figure></p>
+<h2 id="4-注入"><a href="#4-注入" class="headerlink" title="4.注入"></a>4.注入</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-p  测试参数</span><br><span class="line">例：  sqlmap -r bp.txt -p &quot;username&quot;</span><br><span class="line">--skip-static  跳过测试静态参数(有的时候注入有多个参数，那么有些无关紧要的参数修改后页面是没有变化的)</span><br><span class="line">--no-cast  获取数据时，sqlmap会将所有数据转换成字符串，并用空格代替null。(这个在我们注入失败的时候偶尔会见到，提示尝试使用--no-cast)</span><br><span class="line">--tamper=TAMPER 使用sqlmap自带的tamper，或者自己写的tamper，来混淆payload，通常用来绕过waf和ips。</span><br></pre></td></tr></table></figure>
+<h2 id="5-检测"><a href="#5-检测" class="headerlink" title="5.检测"></a>5.检测</h2><p>这些选项可以用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容<br><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">--level=LEVEL  执行测试的等级（1-5，默认为1） </span><br><span class="line">lv2：cookie; lv3：user-agent，refere; lv5：host </span><br><span class="line">在sqlmap/xml/payloads文件内可以看见各个level发送的payload  我常使用--level 3</span><br><span class="line">--risk=RISK  执行测试的风险（0-3，默认为1） </span><br><span class="line">risk 2：基于事件的测试;risk 3：or语句的测试;risk 4：update的测试</span><br><span class="line">升高风险等级会增加数据被篡改的风险。  常用就是默认1</span><br></pre></td></tr></table></figure></p>
+<h2 id="6-枚举"><a href="#6-枚举" class="headerlink" title="6.枚举"></a>6.枚举</h2><p>这些选项可以用来列举后端数据库管理系统的信息、表中的结构和数据。 脱库时使用<br><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">-b, --banner        获取数据库管理系统的标识</span><br><span class="line">--current-user      获取数据库管理系统当前用户</span><br><span class="line">--current-db        获取数据库管理系统当前数据库</span><br><span class="line">--hostname          获取数据库服务器的主机名称</span><br><span class="line">--is-dba            检测DBMS当前用户是否DBA</span><br><span class="line">--users             枚举数据库管理系统用户</span><br><span class="line">--passwords         枚举数据库管理系统用户密码哈希</span><br><span class="line">--privileges        枚举数据库管理系统用户的权限</span><br><span class="line">--dbs              枚举数据库管理系统数据库</span><br><span class="line">--tables           枚举DBMS数据库中的表</span><br><span class="line">--columns          枚举DBMS数据库表列</span><br><span class="line">-D                  要进行枚举的指定数据库名</span><br><span class="line">-T                  要进行枚举的指定表名</span><br><span class="line">-C                  要进行枚举的指定列名</span><br><span class="line">--dump             转储数据库表项,查询字段值</span><br><span class="line">--search           搜索列（S），表（S）和/或数据库名称（S）</span><br><span class="line">--sql-query=QUERY   要执行的SQL语句</span><br><span class="line">--sql-shell         提示交互式SQL的shell</span><br></pre></td></tr></table></figure></p>
+<h2 id="7-文件操作"><a href="#7-文件操作" class="headerlink" title="7.文件操作"></a>7.文件操作</h2><p>这些选项可以被用来访问后端数据库管理系统的底层文件系统<br><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--file-read=RFILE     从后端的数据库管理系统文件系统读取文件</span><br><span class="line">--file-write=WFILE    编辑后端的数据库管理系统文件系统上的本地文件</span><br><span class="line">--file-dest=DFILE     后端的数据库管理系统写入文件的绝对路径</span><br></pre></td></tr></table></figure></p>
+<h2 id="8-操作系统访问"><a href="#8-操作系统访问" class="headerlink" title="8.操作系统访问"></a>8.操作系统访问</h2><p>这些选项可以用于访问后端数据库管理系统的底层操作系统<br><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--os-cmd=OSCMD      执行操作系统命令（OSCMD）</span><br><span class="line">--os-shell          交互式的操作系统的shell</span><br></pre></td></tr></table></figure></p>
+<h1 id="sqlmap常规步骤"><a href="#sqlmap常规步骤" class="headerlink" title="sqlmap常规步骤"></a>sqlmap常规步骤</h1><p>例题（CTFhub<em>Web</em>报错注入）</p>
+<h3 id="1-判断是否有注入"><a href="#1-判断是否有注入" class="headerlink" title="1.判断是否有注入"></a>1.判断是否有注入</h3><p><img src="https://cdn.staticaly.com/gh/Guuuuq/image@main/img/202210182213051.png" alt=""><br>（—batch表示自动判断）<br><img src="https://cdn.staticaly.com/gh/Guuuuq/image@main/img/202210182216335.png" alt=""></p>
+<p>结果说明可以使用布尔盲注，报错注入，时间盲注</p>
+<h3 id="2-查看所有数据库"><a href="#2-查看所有数据库" class="headerlink" title="2.查看所有数据库"></a>2.查看所有数据库</h3><p><img src="https://cdn.staticaly.com/gh/Guuuuq/image@main/img/202210182220637.png" alt=""><br><img src="https://cdn.staticaly.com/gh/Guuuuq/image@main/img/202210182220834.png" alt=""><br>如图有四个数据库</p>
+<h3 id="3-查看当前使用的数据库"><a href="#3-查看当前使用的数据库" class="headerlink" title="3.查看当前使用的数据库"></a>3.查看当前使用的数据库</h3><p><img src="https://cdn.staticaly.com/gh/Guuuuq/image@main/img/202210182223315.png" alt=""><br><img src="https://cdn.staticaly.com/gh/Guuuuq/image@main/img/202210182223704.png" alt=""><br>得知当前使用的数据库名字为’sqli‘</p>
+<h3 id="4-查看数据表"><a href="#4-查看数据表" class="headerlink" title="4.查看数据表"></a>4.查看数据表</h3><p><img src="https://cdn.staticaly.com/gh/Guuuuq/image@main/img/202210182225160.png" alt=""><br><img src="https://cdn.staticaly.com/gh/Guuuuq/image@main/img/202210182226592.png" alt=""><br>当前数据库有两个表名为’flag‘和’news‘</p>
+<h3 id="5-查看列名"><a href="#5-查看列名" class="headerlink" title="5.查看列名"></a>5.查看列名</h3><p><img src="https://cdn.staticaly.com/gh/Guuuuq/image@main/img/202210182228662.png" alt=""><br><img src="https://cdn.staticaly.com/gh/Guuuuq/image@main/img/202210182228222.png" alt=""><br>如图有名为flag的列应该是flag</p>
+<h3 id="6-查看数据"><a href="#6-查看数据" class="headerlink" title="6.查看数据"></a>6.查看数据</h3><p><img src="https://cdn.staticaly.com/gh/Guuuuq/image@main/img/202210182230607.png" alt=""><br><img src="https://cdn.staticaly.com/gh/Guuuuq/image@main/img/202210182231606.png" alt=""><br>得到flag</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://guuuuq.github.io">顾柒</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://guuuuq.github.io/posts/11f9f536.html">https://guuuuq.github.io/posts/11f9f536.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://guuuuq.github.io" target="_blank">顾柒·Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/posts/84b870c6.html"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CTFHub_web_信息泄露_目录遍历</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">顾柒</div><div class="author-info__description">一个有趣的博客</div></div><div class="card-info-data site-data is-center"><a href="/archivesCN/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/Guuuuq" target="_blank" title="Github"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-gitHub"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=1445165221@qq.com" target="_blank" title="Email"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-youxiang"></use></svg></a><a class="social-icon faa-parent animated-hover" href="/atom.xml" target="_blank" title="RSS"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-rss"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/58311246" target="_blank" title="BiliBili"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg></a><a class="social-icon faa-parent animated-hover" href="tencent://Message/?Uin=1445165221&amp;amp;websiteName=local.edu.com:8888=&amp;amp;Menu=yes" target="_blank" title="QQ"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-QQ1"></use></svg></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sqlmap%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">sqlmap是什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sqlmap%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">sqlmap基本命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%80%89%E9%A1%B9"><span class="toc-number">2.1.</span> <span class="toc-text">1.选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%9B%AE%E6%A0%87"><span class="toc-number">2.2.</span> <span class="toc-text">2.目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%AF%B7%E6%B1%82"><span class="toc-number">2.3.</span> <span class="toc-text">3.请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%B3%A8%E5%85%A5"><span class="toc-number">2.4.</span> <span class="toc-text">4.注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%A3%80%E6%B5%8B"><span class="toc-number">2.5.</span> <span class="toc-text">5.检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%9E%9A%E4%B8%BE"><span class="toc-number">2.6.</span> <span class="toc-text">6.枚举</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-number">2.7.</span> <span class="toc-text">7.文件操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AE%BF%E9%97%AE"><span class="toc-number">2.8.</span> <span class="toc-text">8.操作系统访问</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sqlmap%E5%B8%B8%E8%A7%84%E6%AD%A5%E9%AA%A4"><span class="toc-number">3.</span> <span class="toc-text">sqlmap常规步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%9C%89%E6%B3%A8%E5%85%A5"><span class="toc-number">3.0.1.</span> <span class="toc-text">1.判断是否有注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">3.0.2.</span> <span class="toc-text">2.查看所有数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E4%BD%BF%E7%94%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">3.0.3.</span> <span class="toc-text">3.查看当前使用的数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="toc-number">3.0.4.</span> <span class="toc-text">4.查看数据表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%9F%A5%E7%9C%8B%E5%88%97%E5%90%8D"><span class="toc-number">3.0.5.</span> <span class="toc-text">5.查看列名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE"><span class="toc-number">3.0.6.</span> <span class="toc-text">6.查看数据</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/11f9f536.html" title="sqlmap使用方法"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="sqlmap使用方法"/></a><div class="content"><a class="title" href="/posts/11f9f536.html" title="sqlmap使用方法">sqlmap使用方法</a><time datetime="2022-10-18T13:46:55.000Z" title="发表于 2022-10-18 21:46:55">2022-10-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/84b870c6.html" title="CTFHub_web_信息泄露_目录遍历"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CTFHub_web_信息泄露_目录遍历"/></a><div class="content"><a class="title" href="/posts/84b870c6.html" title="CTFHub_web_信息泄露_目录遍历">CTFHub_web_信息泄露_目录遍历</a><time datetime="2022-10-17T10:28:21.000Z" title="发表于 2022-10-17 18:28:21">2022-10-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 顾柒</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="7599116451" data-server="netease" data-type="playlist" data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><div class="app-refresh" id="app-refresh" style="position: fixed;top: -2.2rem;left: 0;right: 0;z-index: 99999;padding: 0 1rem;font-size: 15px;height: 2.2rem;transition: all 0.3s ease;"><div class="app-refresh-wrap" style=" display: flex;color: #fff;height: 100%;align-items: center;justify-content: center;"><label>✨ 有新文章啦！ 👉</label><a href="javascript:void(0)" onclick="location.reload()"><span style="color: #fff;text-decoration: underline;cursor: pointer;">🍗点击食用🍔</span></a></div></div><script>if ('serviceWorker' in navigator) {
+if (navigator.serviceWorker.controller) {
+navigator.serviceWorker.addEventListener('controllerchange', function() {
+showNotification()
+})
+}
+window.addEventListener('load', function() {
+navigator.serviceWorker.register('/sw.js')
+})
+}
+function showNotification() {
+if (GLOBAL_CONFIG.Snackbar) {
+var snackbarBg =
+document.documentElement.getAttribute('data-theme') === 'light' ?
+GLOBAL_CONFIG.Snackbar.bgLight :
+GLOBAL_CONFIG.Snackbar.bgDark
+var snackbarPos = GLOBAL_CONFIG.Snackbar.position
+Snackbar.show({
+text: '✨ 有新文章啦！ 👉',
+backgroundColor: snackbarBg,
+duration: 500000,
+pos: snackbarPos,
+actionText: '🍗点击食用🍔',
+actionTextColor: '#fff',
+onActionClick: function(e) {
+location.reload()
+},
+})
+} else {
+var showBg =
+document.documentElement.getAttribute('data-theme') === 'light' ?
+'#425aef' :
+'#1f1f1f'
+var cssText = `top: 0; background: ${showBg};`
+document.getElementById('app-refresh').style.cssText = cssText
+}
+}</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = '92cd172378dd4aac899e9096abe6bb59';
+  var gaud_map_key = '6fa35ea0295cbbbfe466819485209c42';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><script async src="/js/ali_font.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --></body></html>
