@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>web漏洞_类型及提交注入</title>
+      <link href="/posts/ae7615fc.html"/>
+      <url>/posts/ae7615fc.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="简要明确参数类型"><a href="#简要明确参数类型" class="headerlink" title="简要明确参数类型"></a>简要明确参数类型</h1><p>数字，字符，搜索，JSON等</p><p>根据网站自身的参数，判断注入时是否需要考虑符号问题</p><p>如果参数为数字可能没有单引号，如果是字符很有可能有引号</p><p>其中SQL语句干扰符号：<code>&#39;</code>,<code>&#39;&#39;</code>,<code>%</code>,),等，具体需要看写法</p><p>例：</p><p>?x=Guuuuq<br>select * from user where name like ‘%Guuuuq%’</p><p>百分号的作用是前后带有Guuuuq的都是搜索的目标</p><p>需要在注入时考虑过滤干扰符号</p><h1 id="简要明确请求方法"><a href="#简要明确请求方法" class="headerlink" title="简要明确请求方法"></a>简要明确请求方法</h1><p>GET，POST，COOKIE，REQUEST，HTTP头等</p><p>参数数据过大时往往需要POST传参</p><p>按照出现漏洞的请求方式进行注入</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>web漏洞_MYSQL注入</title>
       <link href="/posts/7efa6085.html"/>
       <url>/posts/7efa6085.html</url>
